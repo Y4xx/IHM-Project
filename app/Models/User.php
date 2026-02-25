@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -22,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,5 +50,45 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un administrateur
+     */
+    public function estAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un enseignant
+     */
+    public function estEnseignant(): bool
+    {
+        return $this->role === 'enseignant';
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un étudiant
+     */
+    public function estEtudiant(): bool
+    {
+        return $this->role === 'etudiant';
+    }
+
+    /**
+     * Cours enseignés par l'enseignant
+     */
+    public function coursEnseignes(): HasMany
+    {
+        return $this->hasMany(Cours::class, 'enseignant_id');
+    }
+
+    /**
+     * Présences de l'étudiant
+     */
+    public function presences(): HasMany
+    {
+        return $this->hasMany(Presence::class, 'etudiant_id');
     }
 }
