@@ -20,7 +20,7 @@ class PresenceController extends Controller
     /**
      * Afficher la page de scan QR pour les étudiants.
      */
-    public function scanPage(Request $request, string $token = null): Response
+    public function scanPage(Request $request, ?string $token = null): Response
     {
         return Inertia::render('etudiant/pointage', [
             'token' => $token,
@@ -44,12 +44,12 @@ class PresenceController extends Controller
             $validated['longitude']
         );
 
-        if (!$locationCheck['estDansLeRayon']) {
+        if (! $locationCheck['estDansLeRayon']) {
             return response()->json([
                 'success' => false,
-                'message' => 'Vous n\'êtes pas dans le périmètre de l\'université. Distance: ' . 
-                    round($locationCheck['distance']) . ' mètres (maximum autorisé: ' . 
-                    GeolocationService::UNIVERSITE_RAYON . ' mètres).',
+                'message' => 'Vous n\'êtes pas dans le périmètre de l\'université. Distance: '.
+                    round($locationCheck['distance']).' mètres (maximum autorisé: '.
+                    GeolocationService::UNIVERSITE_RAYON.' mètres).',
                 'distance' => $locationCheck['distance'],
             ], 422);
         }
@@ -57,7 +57,7 @@ class PresenceController extends Controller
         // 2. Vérifier que le token QR est valide
         $seance = Seance::where('qr_token', $validated['qr_token'])->first();
 
-        if (!$seance) {
+        if (! $seance) {
             return response()->json([
                 'success' => false,
                 'message' => 'Le QR code est invalide ou expiré.',
@@ -65,7 +65,7 @@ class PresenceController extends Controller
         }
 
         // 3. Vérifier que la séance est active
-        if (!$seance->active) {
+        if (! $seance->active) {
             return response()->json([
                 'success' => false,
                 'message' => 'Cette séance n\'est plus active.',
@@ -73,7 +73,7 @@ class PresenceController extends Controller
         }
 
         // 4. Vérifier que la séance est dans la plage horaire
-        if (!$seance->estActive()) {
+        if (! $seance->estActive()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Cette séance n\'est pas en cours. Vérifiez les horaires.',
@@ -112,9 +112,9 @@ class PresenceController extends Controller
 
         $seance->load('cours');
 
-        $message = $statut === 'retard' 
-            ? 'Présence enregistrée avec retard pour ' . $seance->cours->nom . '.'
-            : 'Présence enregistrée avec succès pour ' . $seance->cours->nom . '.';
+        $message = $statut === 'retard'
+            ? 'Présence enregistrée avec retard pour '.$seance->cours->nom.'.'
+            : 'Présence enregistrée avec succès pour '.$seance->cours->nom.'.';
 
         return response()->json([
             'success' => true,
@@ -125,7 +125,7 @@ class PresenceController extends Controller
                 'id' => $seance->id,
                 'cours' => $seance->cours->nom,
                 'date' => $seance->date->format('d/m/Y'),
-                'heure' => $seance->heure_debut . ' - ' . $seance->heure_fin,
+                'heure' => $seance->heure_debut.' - '.$seance->heure_fin,
             ],
         ]);
     }

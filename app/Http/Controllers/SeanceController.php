@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSeanceRequest;
 use App\Models\Cours;
 use App\Models\Seance;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -169,11 +168,11 @@ class SeanceController extends Controller
         }
 
         $seance->update([
-            'active' => !$seance->active,
+            'active' => ! $seance->active,
         ]);
 
-        $message = $seance->active 
-            ? 'La séance a été activée.' 
+        $message = $seance->active
+            ? 'La séance a été activée.'
             : 'La séance a été désactivée.';
 
         return redirect()->back()->with('success', $message);

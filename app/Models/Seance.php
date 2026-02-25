@@ -26,7 +26,7 @@ class Seance extends Model
     protected static function boot(): void
     {
         parent::boot();
-        
+
         static::creating(function ($seance) {
             if (empty($seance->qr_token)) {
                 $seance->qr_token = Str::random(64);
@@ -49,14 +49,14 @@ class Seance extends Model
      */
     public function estActive(): bool
     {
-        if (!$this->active) {
+        if (! $this->active) {
             return false;
         }
 
         $now = now();
         $dateSeance = $this->date->format('Y-m-d');
-        $heureDebut = $dateSeance . ' ' . $this->heure_debut;
-        $heureFin = $dateSeance . ' ' . $this->heure_fin;
+        $heureDebut = $dateSeance.' '.$this->heure_debut;
+        $heureFin = $dateSeance.' '.$this->heure_fin;
 
         return $now->between($heureDebut, $heureFin);
     }
@@ -68,8 +68,8 @@ class Seance extends Model
     {
         $now = now();
         $dateSeance = $this->date->format('Y-m-d');
-        $heureDebut = \Carbon\Carbon::parse($dateSeance . ' ' . $this->heure_debut);
-        
+        $heureDebut = \Carbon\Carbon::parse($dateSeance.' '.$this->heure_debut);
+
         return $now->diffInMinutes($heureDebut) > 15;
     }
 }

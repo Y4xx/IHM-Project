@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('qr_token', 64)->unique();
             $table->boolean('active')->default(true);
             $table->timestamps();
-            
+
             $table->index('cours_id');
             $table->index('date');
             $table->index('qr_token');

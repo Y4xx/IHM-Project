@@ -36,8 +36,8 @@ class DashboardController extends Controller
         $absents = Presence::where('etudiant_id', $user->id)
             ->where('statut', 'absent')->count();
 
-        $tauxPresence = $totalPresences > 0 
-            ? round((($presents + $retards) / $totalPresences) * 100, 1) 
+        $tauxPresence = $totalPresences > 0
+            ? round((($presents + $retards) / $totalPresences) * 100, 1)
             : 0;
 
         return Inertia::render('etudiant/dashboard', [
@@ -87,8 +87,8 @@ class DashboardController extends Controller
             $query->where('enseignant_id', $user->id);
         })->where('statut', 'present')->count();
 
-        $tauxPresence = $totalPresences > 0 
-            ? round(($presentsCount / $totalPresences) * 100, 1) 
+        $tauxPresence = $totalPresences > 0
+            ? round(($presentsCount / $totalPresences) * 100, 1)
             : 0;
 
         return Inertia::render('enseignant/dashboard', [
@@ -120,8 +120,8 @@ class DashboardController extends Controller
         $retardsCount = Presence::where('statut', 'retard')->count();
         $absentsCount = Presence::where('statut', 'absent')->count();
 
-        $tauxPresenceGlobal = $totalPresences > 0 
-            ? round((($presentsCount + $retardsCount) / $totalPresences) * 100, 1) 
+        $tauxPresenceGlobal = $totalPresences > 0
+            ? round((($presentsCount + $retardsCount) / $totalPresences) * 100, 1)
             : 0;
 
         // Statistiques par cours
@@ -133,7 +133,7 @@ class DashboardController extends Controller
                 $total = $presences->count();
                 $presents = $presences->where('statut', 'present')->count();
                 $retards = $presences->where('statut', 'retard')->count();
-                
+
                 return [
                     'id' => $cours->id,
                     'nom' => $cours->nom,
@@ -179,15 +179,15 @@ class DashboardController extends Controller
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="presences_' . date('Y-m-d_H-i-s') . '.csv"',
+            'Content-Disposition' => 'attachment; filename="presences_'.date('Y-m-d_H-i-s').'.csv"',
         ];
 
         return response()->stream(function () use ($presences) {
             $handle = fopen('php://output', 'w');
-            
+
             // BOM for UTF-8
             fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
-            
+
             // En-têtes
             fputcsv($handle, [
                 'Étudiant',

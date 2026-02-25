@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('distance', 8, 2)->nullable(); // distance en mètres
             $table->timestamp('scanne_le')->nullable();
             $table->timestamps();
-            
+
             $table->unique(['etudiant_id', 'seance_id']);
             $table->index('etudiant_id');
             $table->index('seance_id');

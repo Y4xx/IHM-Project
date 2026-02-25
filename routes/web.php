@@ -17,7 +17,7 @@ Route::get('/', function () {
 // Dashboard par défaut - redirige selon le rôle
 Route::get('dashboard', function () {
     $user = auth()->user();
-    
+
     if ($user->estAdmin()) {
         return redirect()->route('admin.dashboard');
     } elseif ($user->estEnseignant()) {
@@ -43,10 +43,10 @@ Route::middleware(['auth', 'verified', 'role:etudiant'])->group(function () {
 // Routes pour les enseignants
 Route::middleware(['auth', 'verified', 'role:enseignant'])->prefix('enseignant')->name('enseignant.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'enseignant'])->name('dashboard');
-    
+
     // Gestion des cours
     Route::resource('cours', CoursController::class);
-    
+
     // Gestion des séances
     Route::resource('seances', SeanceController::class);
     Route::post('seances/{seance}/regenerate-qr', [SeanceController::class, 'regenerateQr'])->name('seances.regenerate-qr');
