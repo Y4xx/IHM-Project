@@ -24,4 +24,13 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
+    // server: {
+    //     host: true,       // listen on all interfaces
+    //     port: 6060,       // your Vite port
+    //     hmr: {
+    //       host: '192.168.11.133', // your Mac IP
+    //       port: 6060,
+    //       protocol: 'ws', // websocket
+    //     }
+    //   }
 });

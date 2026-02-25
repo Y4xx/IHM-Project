@@ -5,9 +5,10 @@ namespace App\Services;
 class GeolocationService
 {
     // Coordonnées de l'université
-    public const UNIVERSITE_LAT = 33.225410;
+    public const UNIVERSITE_LAT = 33.253508;
 
-    public const UNIVERSITE_LON = -8.486408;
+    public const UNIVERSITE_LON = -8.503239;
+
 
     public const UNIVERSITE_RAYON = 300; // en mètres
 
